@@ -1,6 +1,29 @@
 # Ember-timed-promise
 
-This README outlines the details of collaborating on this Ember addon.
+This is an extension of Ember.RSVP.Promise that allow the user to set a Timer
+that will reject the promise if not resolved in time.
+
+
+## Basic Usage
+It works like a normal promise, only it accepts a time (in ms) and a promise as an input.
+
+```javascript
+let prom = new Ember.RSVP.Promise((resolve, reject) =>{
+  Ember.run.later(function() {
+    resolve({
+      response: true
+    });
+  }, 150); // This will delay the promise execution of 150ms
+});
+
+// The promise will reject and throw an error after 100ms
+return new TimedPromise(100, prom).then((response) => {
+    Ember.Logger.log(response); // Will log {response : true}
+  }, (reason) => {
+    Ember.Logger.log(reason);
+    // Will log Error("100ms timer exceeded")
+});
+```
 
 ## Installation
 
@@ -10,8 +33,8 @@ This README outlines the details of collaborating on this Ember addon.
 
 ## Running
 
-* `ember server`
-* Visit your app at http://localhost:4200.
+* `ember serve`
+* Visit your app at http://localhost:4200/tests.
 
 ## Running Tests
 
