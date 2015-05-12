@@ -21,7 +21,11 @@
     "andThen",
     "currentURL",
     "currentPath",
-    "currentRouteName"
+    "currentRouteName",
+    "module",
+    "ok",
+    "expect",
+    "equal"
   ],
   "node": false,
   "browser": false,

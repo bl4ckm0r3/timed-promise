@@ -5,8 +5,9 @@ that will reject the promise if not resolved in time.
 
 
 ## Basic Usage
-It works like a normal promise, only it accepts a time (in ms) and a promise as an input.
+It works like a normal promise, only it accepts a time (in ms) and a promise/jQuery Deferred as an input.
 
+#### Ember.RSVP.Promise
 ```javascript
 let prom = new Ember.RSVP.Promise((resolve, reject) =>{
   Ember.run.later(function() {
@@ -23,6 +24,16 @@ return new TimedPromise(100, prom).then((response) => {
     Ember.Logger.log(reason);
     // Will log Error("100ms timer exceeded")
 });
+```
+
+#### jQuery Deferred
+```javascript
+let prom = Ember.$.getJSON("https://api.github.com/repos/emberjs/ember.js/pulls");
+return new TimedPromise(2000, prom).then((response) => {
+   Ember.Logger.log(response); // Will have an array of pulls from the ember repo
+}).catch((reason) => {
+   Ember.Logger.log(reason); // Why did you fail?
+   });
 ```
 
 ## Installation

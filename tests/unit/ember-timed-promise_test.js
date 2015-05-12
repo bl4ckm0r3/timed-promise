@@ -9,7 +9,7 @@ import TimedPromise from 'ember-timed-promise/timed-promise';
 
 module('TimedPromise');
 
-test("ember-timed-promise is thenable", function() {
+test("ember-timed-promise is thenable", () => {
   expect(1);
   let defaultTime = 200;
   let testPromise = new Ember.RSVP.Promise((res)=>{setTimeout(res, 10);});
@@ -26,19 +26,19 @@ test("ember-timed-promise resolves correctly", function() {
     });
 });
 
-test("ember-time-promise fails when timed out - catch", function() {
+test("ember-timed-promise fails when timed out - catch", () => {
   expect(1);
   let defaultTime = 10;
   let failingTime = 20;
   let testPromise = new Ember.RSVP.Promise((res)=>{setTimeout(res, failingTime);});
   return new TimedPromise(defaultTime, testPromise).then(() => {
     ok(false, "This success shouldn't be called");
-  }).catch(function(reason) {
+  }).catch((reason) => {
       ok(reason["message"].indexOf("timer exceeded") !== -1, "promise failed correctly");
     });
 });
 
-test("ember-time-promise fails when timed out - fail", function() {
+test("ember-timed-promise fails when timed out - fail", () => {
   expect(1);
   let defaultTime = 10;
   let failingTime = 20;
@@ -48,10 +48,9 @@ test("ember-time-promise fails when timed out - fail", function() {
     }, (reason) => {
       ok(reason["message"].indexOf("timer exceeded") !== -1, "promise failed correctly");
   });
-
 });
 
-test("ember-time-promise succeeds before timingOut", function() {
+test("ember-timed-promise succeeds before timingOut", () => {
   expect(2);
   let defaultTime = 200;
   let succeedingTime = 10;
@@ -67,5 +66,18 @@ test("ember-time-promise succeeds before timingOut", function() {
     }).finally(() => {
       ok(true, "This finally should be called");
     });
+});
 
+test("ember-timed-promises can be nested", () => {
+   expect(2);
+   let defaultTime = 200;
+   let succeedingTime = 10;
+   let testPromise = new Ember.RSVP.Promise((res) => {
+      res(ok(true, "it called nested"));
+   });
+   let testTimedPromise = new TimedPromise(succeedingTime, testPromise);
+   
+   return new TimedPromise(defaultTime * 2, testTimedPromise).then(() => {
+      ok(true, "It called outer");
+   });
 });

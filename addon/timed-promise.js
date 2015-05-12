@@ -5,7 +5,8 @@ export default (duration, promise) => {
     let timer = Ember.run.later(() => {
       return reject(new Error(Ember.String.fmt("%@ms timer exceeded", duration)));
     }, duration);
-    return promise.then(resolve, reject).finally(()=>{
+    let eventually = promise["finally"] ? "finally" : "always";
+    return promise.then(resolve, reject)[eventually](() => {
       Ember.run.cancel(timer);
     });
   });
