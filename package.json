@@ -1,6 +1,6 @@
 {
   "name": "ember-timed-promise",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Create promises that have to be resolved before a given time",
   "directories": {
     "doc": "doc",
