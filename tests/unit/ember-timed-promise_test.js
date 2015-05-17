@@ -70,14 +70,27 @@ test("ember-timed-promise succeeds before timingOut", () => {
 
 test("ember-timed-promises can be nested", () => {
    expect(2);
-   let defaultTime = 200;
+   let defaultTime = 1000;
    let succeedingTime = 10;
    let testPromise = new Ember.RSVP.Promise((res) => {
       res(ok(true, "it called nested"));
    });
    let testTimedPromise = new TimedPromise(succeedingTime, testPromise);
-   
+
    return new TimedPromise(defaultTime * 2, testTimedPromise).then(() => {
       ok(true, "It called outer");
    });
+});
+
+test("ember-timed-promises accepts custom message", () => {
+  expect(1);
+  let defaultTime = 20;
+  let succeedingTime = 100;
+  let customReason = "custom reason";
+  let testPromise = new Ember.RSVP.Promise((res) => {
+    Ember.run.later(res, succeedingTime);
+  });
+  return new TimedPromise(defaultTime, testPromise, customReason).catch((reason) => {
+      equal(reason.message, customReason, "Using Custom Error Message");
+    });
 });

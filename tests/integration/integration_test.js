@@ -1,9 +1,9 @@
-import { 
-   test 
+import {
+   test
 } from 'ember-qunit';
 import startApp from '../helpers/start-app';
 import Ember from 'ember';
-import { 
+import {
    defineFixture,
    request,
    raw
@@ -54,7 +54,7 @@ test("ember-time-promise succeeds with request", () => {
 
 test("ember-time-promise succeeds with raw", () => {
   expect(2);
-  let defaultTime = 200;
+  let defaultTime = 1000;
   let testPromise = raw("/users");
   return new TimedPromise(defaultTime, testPromise).then(() => {
       ok(true, "success!");
